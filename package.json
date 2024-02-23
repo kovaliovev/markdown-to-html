@@ -1,0 +1,25 @@
+{
+  "name": "markdown-to-html",
+  "version": "1.0.0",
+  "description": "simple console application to convert markdown-formatted text to html",
+  "main": "markdown-to-html.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kovaliovev/markdown-to-html.git"
+  },
+  "keywords": [
+    "markdown"
+  ],
+  "author": "Yevhenii Kovalov",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kovaliovev/markdown-to-html/issues"
+  },
+  "homepage": "https://github.com/kovaliovev/markdown-to-html#readme",
+  "dependencies": {
+    "commander": "^12.0.0"
+  }
+}
