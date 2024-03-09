@@ -61,9 +61,51 @@ class Converter {
     return processedLine;
   }
 
-  validateLine(line) {}
+  validateLine(line) {
+    const mdFlags = Object.keys(this.markup);
+
+    for (const flag of mdFlags) {
+      const { allOpen, allClose } = this.parseFlags(line, flag);
+
+      if (!allOpen.length && !allClose.length) continue;
+      else if (allOpen.length > allClose.length)
+        this.logError('Found unclosed md flag!');
+
+      for (let i = 0; i < allOpen.length; i++) {
+        const startIndex = allOpen[i].index;
+        const endIndex = allClose[i].index + allClose[i][0].trim().length;
+
+        const text = line
+          .substring(startIndex, endIndex)
+          .trim()
+          .slice(flag.length, -flag.length);
+
+        for (const nestedFlag of mdFlags) {
+          const { allOpen: allNestedOpen, allClose: allNestedClose } =
+            this.parseFlags(text, nestedFlag);
+
+          if (
+            allNestedOpen.length &&
+            allNestedOpen.length === allNestedClose.length
+          )
+            this.logError('Found nested md flag!');
+        }
+      }
+    }
+    return line;
+  }
 
   replaceFlags(line) {}
+
+  parseFlags(line, flag) {
+    const symbol = flag[0];
+    const regExp = flag.replace(new RegExp(`\\${symbol}`, 'g'), `\\${symbol}`);
+
+    return {
+      allOpen: [...line.matchAll(new RegExp(`(?:\\s|^)${regExp}[^\\s]`, 'g'))],
+      allClose: [...line.matchAll(new RegExp(`[^\\s]${regExp}(?:\\s|$)`, 'g'))],
+    };
+  }
 }
 
 module.exports = { Converter };
