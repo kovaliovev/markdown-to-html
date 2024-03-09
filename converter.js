@@ -14,11 +14,6 @@ class Converter {
     this.isPreformatted = false;
   }
 
-  logError(error) {
-    console.error(`\x1b[31m${error}\x1b[0m`);
-    process.exit(1);
-  }
-
   toHTML(mdText) {
     const lines = mdText.split('\r\n');
     const result = [];
@@ -105,6 +100,11 @@ class Converter {
       allOpen: [...line.matchAll(new RegExp(`(?:\\s|^)${regExp}[^\\s]`, 'g'))],
       allClose: [...line.matchAll(new RegExp(`[^\\s]${regExp}(?:\\s|$)`, 'g'))],
     };
+  }
+
+  logError(error) {
+    console.error(`\x1b[31mError: ${error}\x1b[0m`);
+    process.exit(1);
   }
 }
 
