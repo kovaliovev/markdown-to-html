@@ -4,10 +4,10 @@ class Converter {
   constructor() {
     this.markup = {
       '**': 'b',
-      '~~': 'del',
       '_': 'i',
-      '`': 'code',
+      '`': 'tt',
       '```': 'pre',
+      '\n': 'p',
     };
   }
 }
