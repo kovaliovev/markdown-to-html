@@ -9,6 +9,9 @@ class Converter {
       '```': 'pre',
       '\n': 'p',
     };
+
+    this.isOpened = false;
+    this.isPreformatted = false;
   }
 
   logError(error) {
@@ -29,7 +32,38 @@ class Converter {
     return result.join('\n').replace(/\n<\/p>/g, '</p>');
   }
 
-  processLine(line) {}
+  processLine(line) {
+    if (line === '```') {
+      this.isPreformatted = !this.isPreformatted;
+      const tag = this.isPreformatted ? '<pre>' : '</pre>';
+
+      if (this.isPreformatted && !this.isOpened) {
+        this.isOpened = true;
+        return `<p>${tag}`;
+      }
+      return tag;
+    }
+
+    if (this.isPreformatted) return line;
+
+    if (!line && this.isOpened) {
+      this.isOpened = false;
+      return '</p>';
+    } else if (!line) return null;
+
+    const validLine = this.validateLine(line);
+    let processedLine = this.replaceFlags(validLine);
+
+    if (!this.isOpened) {
+      processedLine = `<p>${processedLine}`;
+      this.isOpened = true;
+    }
+    return processedLine;
+  }
+
+  validateLine(line) {}
+
+  replaceFlags(line) {}
 }
 
 module.exports = { Converter };
