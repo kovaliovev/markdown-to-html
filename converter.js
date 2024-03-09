@@ -90,7 +90,23 @@ class Converter {
     return line;
   }
 
-  replaceFlags(line) {}
+  replaceFlags(line) {
+    let replacedLine = line;
+
+    for (const [flag, tag] of Object.entries(this.markup)) {
+      const { allOpen, allClose } = this.parseFlags(replacedLine, flag);
+
+      for (let i = 0; i < allOpen.length; i++) {
+        const openFlagPart = allOpen[i][0];
+        const closeFlagPart = allClose[i][0];
+
+        replacedLine = replacedLine
+          .replace(openFlagPart, openFlagPart.replace(flag, `<${tag}>`))
+          .replace(closeFlagPart, closeFlagPart.replace(flag, `</${tag}>`));
+      }
+    }
+    return replacedLine;
+  }
 
   parseFlags(line, flag) {
     const symbol = flag[0];
