@@ -67,19 +67,23 @@ describe('Invalid md to html converting', () => {
         .toThrow('Found unclosed md flag!')
     );
   });
-	test('nested-1', () => {
+  test('nested-1', () => {
     expect(() =>
-      c.toHTML('This is a **_italico-bold_** word.').toThrow('Found nested md flag!')
+      c
+        .toHTML('This is a **_italico-bold_** word.')
+        .toThrow('Found nested md flag!')
     );
   });
-	test('nested-2', () => {
+  test('nested-2', () => {
     expect(() =>
       c.toHTML('**`_this is invalid_`**').toThrow('Found nested md flag!')
     );
   });
-	test('nested-3', () => {
+  test('nested-3', () => {
     expect(() =>
-      c.toHTML('This is a ****very bold**** word.').toThrow('Found nested md flag!')
+      c
+        .toHTML('This is a ****very bold**** word.')
+        .toThrow('Found nested md flag!')
     );
   });
 });
