@@ -57,7 +57,7 @@ class Converter {
 
       if (!allOpen.length && !allClose.length) continue;
       else if (allOpen.length > allClose.length)
-        this.logError('Found unclosed md flag!');
+        throw new Error('Found unclosed md flag!');
 
       for (let i = 0; i < allOpen.length; i++) {
         const startIndex = allOpen[i].index;
@@ -76,7 +76,7 @@ class Converter {
             allNestedOpen.length &&
             allNestedOpen.length === allNestedClose.length
           )
-            this.logError('Found nested md flag!');
+            throw new Error('Found nested md flag!');
         }
       }
     }
@@ -109,11 +109,6 @@ class Converter {
       allOpen: [...line.matchAll(new RegExp(`(?:\\s|^)${regExp}[^\\s]`, 'g'))],
       allClose: [...line.matchAll(new RegExp(`[^\\s]${regExp}(?:\\s|$)`, 'g'))],
     };
-  }
-
-  logError(error) {
-    console.error(`\x1b[31mError: ${error}\x1b[0m`);
-    process.exit(1);
   }
 }
 

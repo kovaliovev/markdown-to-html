@@ -25,16 +25,14 @@ program
   const outputPath = program.opts().output;
 
   const data = await fs.readFile(inputPath, 'utf8').catch((err) => {
-    console.error('\x1b[31mError during reading input file:\x1b[0m', err);
-    process.exit(1);
+    throw new Error('Error during reading input file:', err);
   });
 
   const html = converter.toHTML(data);
 
   if (outputPath) {
     await fs.writeFile(outputPath, html).catch((err) => {
-      console.error('\x1b[31mError during writing to output file:\x1b[0m', err);
-      process.exit(1);
+      throw new Error('Error during writing to output file:', err);
     });
   } else console.log(html);
 })();
