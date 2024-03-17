@@ -3,16 +3,7 @@
 const fs = require('node:fs/promises');
 const { program, Option } = require('commander');
 const { Converter } = require('./lib/converter.js');
-
-const MARKUPS = {
-  html: {
-    '**': { open: '<b>', close: '</b>' },
-    _: { open: '<i>', close: '</i>' },
-    '`': { open: '<tt>', close: '</tt>' },
-    '```': { open: '<pre>', close: '</pre>' },
-    '\n': { open: '<p>', close: '</p>' },
-  },
-};
+const { MARKUP } = require('./lib/markup.js');
 
 program
   .version('1.0.0')
@@ -31,7 +22,7 @@ program
 
 (async () => {
   const outputFormat = program.opts().format;
-  const converter = new Converter(MARKUPS[outputFormat]);
+  const converter = new Converter(MARKUP[outputFormat]);
 
   const inputPath = program.args[0];
   const outputPath = program.opts().output;

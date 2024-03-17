@@ -1,31 +1,29 @@
+'use strict';
+
 const { Converter } = require('../lib/converter.js');
-const c = new Converter({
-  '**': { open: '<b>', close: '</b>' },
-  _: { open: '<i>', close: '</i>' },
-  '`': { open: '<tt>', close: '</tt>' },
-  '```': { open: '<pre>', close: '</pre>' },
-  '\n': { open: '<p>', close: '</p>' },
-});
+const { MARKUP } = require('../lib/markup.js');
+
+const cHTML = new Converter(MARKUP['html']);
 
 describe('Valid md to html converting', () => {
   test('bold', () => {
-    expect(c.fromMarkdown('This is a **bold** word.')).toBe(
+    expect(cHTML.fromMarkdown('This is a **bold** word.')).toBe(
       '<p>This is a <b>bold</b> word.</p>'
     );
   });
   test('italic', () => {
-    expect(c.fromMarkdown('This is a _italic_ word.')).toBe(
+    expect(cHTML.fromMarkdown('This is a _italic_ word.')).toBe(
       '<p>This is a <i>italic</i> word.</p>'
     );
   });
   test('monospaced', () => {
-    expect(c.fromMarkdown('This is a `monospaced` word.')).toBe(
+    expect(cHTML.fromMarkdown('This is a `monospaced` word.')).toBe(
       '<p>This is a <tt>monospaced</tt> word.</p>'
     );
   });
   test('preformatted', () => {
     expect(
-      c.fromMarkdown(
+      cHTML.fromMarkdown(
         '```\r\nThis is **preformatted** _text_\r\n\r\nThis is _preformatted_ `text too`\r\n```'
       )
     ).toBe(
@@ -33,12 +31,12 @@ describe('Valid md to html converting', () => {
     );
   });
   test('empty', () => {
-    expect(c.fromMarkdown(' ')).toBe('<p> </p>');
+    expect(cHTML.fromMarkdown(' ')).toBe('<p> </p>');
   });
   test('multi paragraphs', () => {
-    expect(c.fromMarkdown('**First** _paragraph_\r\n\r\n`Second` line')).toBe(
-      '<p><b>First</b> <i>paragraph</i></p>\n<p><tt>Second</tt> line</p>'
-    );
+    expect(
+      cHTML.fromMarkdown('**First** _paragraph_\r\n\r\n`Second` line')
+    ).toBe('<p><b>First</b> <i>paragraph</i></p>\n<p><tt>Second</tt> line</p>');
   });
 });
 
@@ -82,7 +80,9 @@ describe('Invalid md to html converting', () => {
   });
   test('nested-2', () => {
     expect(() =>
-      c.fromMarkdown('**`_this is invalid_`**').toThrow('Found nested md flag!')
+      cHTML
+        .fromMarkdown('**`_this is invalid_`**')
+        .toThrow('Found nested md flag!')
     );
   });
   test('nested-3', () => {
