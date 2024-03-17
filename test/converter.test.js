@@ -41,3 +41,45 @@ describe('Valid md to html converting', () => {
     );
   });
 });
+
+describe('Invalid md to html converting', () => {
+  test('unclosed bold', () => {
+    expect(() =>
+      c.toHTML('This is a **bold word.').toThrow('Found unclosed md flag!')
+    );
+  });
+  test('unclosed italic', () => {
+    expect(() =>
+      c.toHTML('This is a italic_ word.').toThrow('Found unclosed md flag!')
+    );
+  });
+  test('unclosed monospaced', () => {
+    expect(() =>
+      c.toHTML('This is a `monospaced word.').toThrow('Found unclosed md flag!')
+    );
+  });
+  test('unclosed preformatted', () => {
+    expect(() =>
+      c
+        .toHTML(
+          '```\r\nThis is **preformatted** _text_\r\n\r\nThis is _preformatted_ `text too`\r\n'
+        )
+        .toThrow('Found unclosed md flag!')
+    );
+  });
+	test('nested-1', () => {
+    expect(() =>
+      c.toHTML('This is a **_italico-bold_** word.').toThrow('Found nested md flag!')
+    );
+  });
+	test('nested-2', () => {
+    expect(() =>
+      c.toHTML('**`_this is invalid_`**').toThrow('Found nested md flag!')
+    );
+  });
+	test('nested-3', () => {
+    expect(() =>
+      c.toHTML('This is a ****very bold**** word.').toThrow('Found nested md flag!')
+    );
+  });
+});
