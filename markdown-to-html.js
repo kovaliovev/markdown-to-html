@@ -7,7 +7,7 @@ const { Converter } = require('./converter.js');
 const MARKUPS = {
   html: {
     '**': { open: '<b>', close: '</b>' },
-    '_': { open: '<i>', close: '</i>' },
+    _: { open: '<i>', close: '</i>' },
     '`': { open: '<tt>', close: '</tt>' },
     '```': { open: '<pre>', close: '</pre>' },
     '\n': { open: '<p>', close: '</p>' },
@@ -17,7 +17,7 @@ const MARKUPS = {
 program
   .version('1.0.0')
   .argument('<input>', 'Path to the input Markdown file')
-  .option('-o, --output <output>', 'Path to the output HTML file')
+  .option('-o, --output <output>', 'Path to the output file')
   .addOption(
     new Option('-f, --format <format>', 'Output format: ansi | html').choices([
       'ansi',
@@ -40,11 +40,11 @@ program
     throw new Error('Error during reading input file:', err);
   });
 
-  const html = converter.toHTML(data);
+  const outputText = converter.fromMarkdown(data);
 
   if (outputPath) {
-    await fs.writeFile(outputPath, html).catch((err) => {
+    await fs.writeFile(outputPath, outputText).catch((err) => {
       throw new Error('Error during writing to output file:', err);
     });
-  } else console.log(html);
+  } else console.log(outputText);
 })();

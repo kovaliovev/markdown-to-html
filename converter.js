@@ -7,7 +7,7 @@ class Converter {
     this.isPreformatted = false;
   }
 
-  toHTML(mdText) {
+  fromMarkdown(mdText) {
     const lines = mdText.split('\r\n');
     const result = [];
 
