@@ -29,7 +29,7 @@ node markdown-to-html <inputPath> [options]
 
 # Example
 ```shell
-node markdown-to-html ./pso-shemsika.md -o /pso-shemsika.html
+node markdown-to-html ./rso-shemsika.md -o ./rso-shemsika.html
 ```
 
 # Revert commit - [ccf3129](https://github.com/kovaliovev/markdown-to-html/commit/ccf31296844e73bd49b702fb284a6b3a2dbed715)
