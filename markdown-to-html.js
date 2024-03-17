@@ -2,7 +2,7 @@
 
 const fs = require('node:fs/promises');
 const { program, Option } = require('commander');
-const { Converter } = require('./converter.js');
+const { Converter } = require('./lib/converter.js');
 
 const MARKUPS = {
   html: {

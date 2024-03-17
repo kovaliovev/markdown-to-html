@@ -1,7 +1,7 @@
-const { Converter } = require('../converter.js');
+const { Converter } = require('../lib/converter.js');
 const c = new Converter({
   '**': { open: '<b>', close: '</b>' },
-  '_': { open: '<i>', close: '</i>' },
+  _: { open: '<i>', close: '</i>' },
   '`': { open: '<tt>', close: '</tt>' },
   '```': { open: '<pre>', close: '</pre>' },
   '\n': { open: '<p>', close: '</p>' },
