@@ -23,11 +23,13 @@ class Converter {
   processLine(line) {
     if (line === '```') {
       this.isPreformatted = !this.isPreformatted;
-      const tag = this.isPreformatted ? '<pre>' : '</pre>';
+      const tag = this.isPreformatted
+        ? this.markup['```'].open
+        : this.markup['```'].close;
 
       if (this.isPreformatted && !this.isOpened) {
         this.isOpened = true;
-        return `<p>${tag}`;
+        return this.markup['\n'].open + tag;
       }
       return tag;
     }
@@ -36,14 +38,14 @@ class Converter {
 
     if (!line && this.isOpened) {
       this.isOpened = false;
-      return '</p>';
+      return this.markup['\n'].close;
     } else if (!line) return null;
 
     const validLine = this.validateLine(line);
     let processedLine = this.replaceFlags(validLine);
 
     if (!this.isOpened) {
-      processedLine = `<p>${processedLine}`;
+      processedLine = this.markup['\n'].open + processedLine;
       this.isOpened = true;
     }
     return processedLine;
@@ -86,7 +88,7 @@ class Converter {
   replaceFlags(line) {
     let replacedLine = line;
 
-    for (const [flag, tag] of Object.entries(this.markup)) {
+    for (const [flag, tags] of Object.entries(this.markup)) {
       const { allOpen, allClose } = this.parseFlags(replacedLine, flag);
 
       for (let i = 0; i < allOpen.length; i++) {
@@ -94,8 +96,8 @@ class Converter {
         const closeFlagPart = allClose[i][0];
 
         replacedLine = replacedLine
-          .replace(openFlagPart, openFlagPart.replace(flag, `<${tag}>`))
-          .replace(closeFlagPart, closeFlagPart.replace(flag, `</${tag}>`));
+          .replace(openFlagPart, openFlagPart.replace(flag, tags.open))
+          .replace(closeFlagPart, closeFlagPart.replace(flag, tags.close));
       }
     }
     return replacedLine;

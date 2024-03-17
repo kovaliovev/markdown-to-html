@@ -1,10 +1,10 @@
 const { Converter } = require('../converter.js');
 const c = new Converter({
-  '**': 'b',
-  '_': 'i',
-  '`': 'tt',
-  '```': 'pre',
-  '\n': 'p',
+  '**': { open: '<b>', close: '</b>' },
+  '_': { open: '<i>', close: '</i>' },
+  '`': { open: '<tt>', close: '</tt>' },
+  '```': { open: '<pre>', close: '</pre>' },
+  '\n': { open: '<p>', close: '</p>' },
 });
 
 describe('Valid md to html converting', () => {

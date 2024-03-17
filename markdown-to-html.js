@@ -5,11 +5,11 @@ const { program } = require('commander');
 const { Converter } = require('./converter.js');
 
 const MARKUP = {
-  '**': 'b',
-  '_': 'i',
-  '`': 'tt',
-  '```': 'pre',
-  '\n': 'p',
+  '**': { open: '<b>', close: '</b>' },
+  '_': { open: '<i>', close: '</i>' },
+  '`': { open: '<tt>', close: '</tt>' },
+  '```': { open: '<pre>', close: '</pre>' },
+  '\n': { open: '<p>', close: '</p>' },
 };
 
 const converter = new Converter(MARKUP);
